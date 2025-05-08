@@ -14,17 +14,25 @@ export default function about() {
         <article className="flex flex-col gap-4">
           <MotionDiv delayOffset={0.4}>
             <p>
-              Hello, I'm Abishek Maharajan, a passionate technology enthusiast and full-stack developer based in India. I'm on a journey to explore and master the art of building robust web applications.
+              Hello, I'm Abishek Maharajan, a passionate technology enthusiast
+              and full-stack developer based in India. I'm on a journey to
+              explore and master the art of building robust web applications.
             </p>
           </MotionDiv>
           <MotionDiv delayOffset={0.5}>
             <p>
-              With a strong foundation in modern web technologies, I specialize in building scalable applications using React 18, Node.js, and various database systems including MongoDB, MSSQL, and PostgreSQL. My recent exploration into Llama 3 has further expanded my capabilities in AI-driven applications.
+              With a strong foundation in modern web technologies, I specialize
+              in building scalable applications using React 18, Node.js, and
+              various database systems including MongoDB, MSSQL, and PostgreSQL.
+              My recent exploration into Llama 3 has further expanded my
+              capabilities in AI-driven applications.
             </p>
           </MotionDiv>
           <MotionDiv delayOffset={0.6}>
             <p>
-              When I'm not coding, you can find me diving deep into new technologies, experimenting with different frameworks, and exploring innovative ways to solve complex problems through code.
+              When I'm not coding, you can find me diving deep into new
+              technologies, experimenting with different frameworks, and
+              exploring innovative ways to solve complex problems through code.
             </p>
           </MotionDiv>
         </article>
@@ -33,7 +41,7 @@ export default function about() {
         <MotionDiv delayOffset={0.4}>
           <CoolPortraitCard className="hidden lg:block">
             <img
-              src="/cropped.jpg"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/cropped.jpg`}
               alt="photo"
               className="w-[350px] min-w-[300px] rounded-xl transition-all"
             />
@@ -41,7 +49,7 @@ export default function about() {
         </MotionDiv>
         <MotionDiv delayOffset={0.4}>
           <img
-            src="/cropped.jpg"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/cropped.jpg`}
             alt="photo"
             className="w-[350px] min-w-[300px] rounded-xl transition-all hover:rotate-3 hover:scale-105 lg:hidden"
           />

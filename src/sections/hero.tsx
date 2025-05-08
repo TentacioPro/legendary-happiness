@@ -17,7 +17,10 @@ export default function hero() {
             loop
             playsInline
           >
-            <source src={"/memoji_out.mp4"} type="video/mp4" />
+            <source
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/memoji_out.mp4`}
+              type="video/mp4"
+            />
             Your browser does not support the video tag.
           </video>
         </MotionDiv>
@@ -40,13 +43,13 @@ export default function hero() {
           </p>
         </MotionDiv>
         <MotionDiv delayOffset={1.4}>
-          <p className="text-gray-600">
-            — Albert Einstein
-          </p>
+          <p className="text-gray-600">— Albert Einstein</p>
         </MotionDiv>
         <MotionDiv delayOffset={1.6}>
           <p className="mt-4">
-            I'm a polymath developer with a passion for building intelligent systems and capturing moments through photography. I thrive at the intersection of technology, creativity, and artificial intelligence.
+            I'm a polymath developer with a passion for building intelligent
+            systems and capturing moments through photography. I thrive at the
+            intersection of technology, creativity, and artificial intelligence.
           </p>
         </MotionDiv>
       </div>
