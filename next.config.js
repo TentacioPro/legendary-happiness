@@ -8,8 +8,6 @@ const nextConfig = {
   },
   basePath: isProd ? "/legendary-happiness" : "",
   assetPrefix: isProd ? "/legendary-happiness/" : "",
-  // basePath: "",
-  // assetPrefix: "",
 };
 
 module.exports = nextConfig;
