@@ -24,10 +24,28 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Build project
-        run: pnpm build
+        run: |
+          pnpm build
+          cp -r public/* out/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
+          publish_branch: gh-pages
+          force_orphan: true
+          clean: true
+          keep_files: true
+          strip_html: false
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: Deploy to GitHub Pages
+          keep_history: true
+          enable_jekyll: false
+          cname: legendary-happiness.github.io
+          custom_domain: legendary-happiness.github.io
+          domain_verify: true
+          verbose: true
+          force_https: true
+          nojekyll: true
