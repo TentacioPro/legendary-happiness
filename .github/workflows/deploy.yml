@@ -31,7 +31,13 @@ jobs:
           mkdir -p gh-pages
           cp -r out/* gh-pages/
           # Copy public assets to gh-pages
-          cp -r public/* gh-pages/
+          mkdir -p gh-pages/public
+          # Copy only optimized assets
+          cp -r public/* gh-pages/public/
+          # Optimize images
+          find gh-pages/public -type f -name "*.jpg" -exec convert {} -strip -quality 85 {} \;
+          # Compress video (if you have ffmpeg installed)
+          # find gh-pages/public -type f -name "*.mp4" -exec ffmpeg -i {} -vcodec libx264 -crf 23 -preset veryfast -acodec copy {} \;
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -45,5 +51,8 @@ jobs:
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: Deploy to GitHub Pages
           enable_jekyll: false
-          cname: legendary-happiness.github.io
           nojekyll: true
+          # Add asset optimization
+          asset_optimization: true
+          # Add maximum file size limit
+          max_file_size: 10000000  # 10MB
