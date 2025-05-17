@@ -11,36 +11,33 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          node-version: '18'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Build project
         run: |
           pnpm build
-          mkdir -p out/public
-          cp -r public/* out/public/
-          cp -r public/* out/
-          # Copy assets to gh-pages directory
+          # Copy build output to gh-pages directory
           mkdir -p gh-pages
-          cp -r public/* gh-pages/
-          # Copy build output to gh-pages
           cp -r out/* gh-pages/
+          # Copy public assets to gh-pages
+          cp -r public/* gh-pages/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./out
+          publish_dir: ./gh-pages
           force_orphan: true
           keep_files: true
           user_name: github-actions[bot]
