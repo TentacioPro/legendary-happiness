@@ -33,15 +33,13 @@ const nextConfig = {
     ASSET_PREFIX: isProd ? "/legendary-happiness/" : "",
   },
   trailingSlash: true,
-  // App Router specific configuration
-  experimental: {
-    appDir: true,
-  },
   // For static export with App Router
-  generateStaticParams: async () => {
-    return [
-      { slug: 'index' }
-    ];
+  static: true,
+  // Add proper export path map for App Router
+  exportPathMap: async () => {
+    return {
+      '/': { page: '/' }
+    };
   }
 };
 

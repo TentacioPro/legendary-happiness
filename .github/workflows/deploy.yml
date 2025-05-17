@@ -37,24 +37,13 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./gh-pages
           publish_branch: gh-pages
-          force_orphan: false
-          clean: false
+          publish_dir: ./out
+          force_orphan: true
           keep_files: true
-          strip_html: false
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: Deploy to GitHub Pages
-          keep_history: true
           enable_jekyll: false
           cname: legendary-happiness.github.io
-          custom_domain: legendary-happiness.github.io
-          domain_verify: true
-          verbose: true
-          force_https: true
           nojekyll: true
-          # Add base path to HTML files
-          base_path: /legendary-happiness
-          # Add base path to assets
-          asset_path: /legendary-happiness
