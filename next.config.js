@@ -32,12 +32,17 @@ const nextConfig = {
     BASE_PATH: isProd ? "/legendary-happiness" : "",
     ASSET_PREFIX: isProd ? "/legendary-happiness/" : "",
   },
-  exportPathMap: function() {
-    return {
-      '/': { page: '/' }
-    }
-  },
   trailingSlash: true,
+  // App Router specific configuration
+  experimental: {
+    appDir: true,
+  },
+  // For static export with App Router
+  generateStaticParams: async () => {
+    return [
+      { slug: 'index' }
+    ];
+  }
 };
 
 module.exports = nextConfig;
