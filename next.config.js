@@ -34,13 +34,20 @@ const nextConfig = {
   },
   trailingSlash: true,
   // For static export with App Router
-  static: true,
+  experimental: {
+    appDir: true,
+    optimizePackageImports: ['lucide-react']
+  },
   // Add proper export path map for App Router
-  exportPathMap: async () => {
-    return {
-      '/': { page: '/' }
-    };
-  }
+  generateStaticParams: async () => {
+    return [
+      { slug: 'index' }
+    ];
+  },
+  // Add base path to HTML files
+  basePath: isProd ? '/legendary-happiness' : '',
+  // Add base path to assets
+  assetPrefix: isProd ? '/legendary-happiness/' : ''
 };
 
 module.exports = nextConfig;

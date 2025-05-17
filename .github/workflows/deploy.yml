@@ -32,6 +32,8 @@ jobs:
           # Copy assets to gh-pages directory
           mkdir -p gh-pages
           cp -r public/* gh-pages/
+          # Copy build output to gh-pages
+          cp -r out/* gh-pages/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
