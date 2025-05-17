@@ -7,6 +7,9 @@ const nextConfig = {
     unoptimized: true,
     domains: ["localhost"],
     path: "/_next/image/",
+    loader: "default",
+    minimumCacheTTL: 60,
+    formats: ["image/webp"],
   },
   basePath: isProd ? "/legendary-happiness" : "",
   assetPrefix: isProd ? "/legendary-happiness/" : "",
@@ -20,6 +23,12 @@ const nextConfig = {
       };
     }
     return config;
+  },
+  publicRuntimeConfig: {
+    basePath: isProd ? "/legendary-happiness" : "",
+  },
+  env: {
+    BASE_PATH: isProd ? "/legendary-happiness" : "",
   },
 };
 

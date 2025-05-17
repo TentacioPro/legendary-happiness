@@ -26,6 +26,8 @@ jobs:
       - name: Build project
         run: |
           pnpm build
+          mkdir -p out/public
+          cp -r public/* out/public/
           cp -r public/* out/
 
       - name: Deploy to GitHub Pages
