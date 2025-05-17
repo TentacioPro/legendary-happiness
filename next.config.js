@@ -6,7 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
     domains: ["localhost"],
-    path: "/_next/image/",
+    path: "/legendary-happiness/_next/image/",
     loader: "default",
     minimumCacheTTL: 60,
     formats: ["image/webp"],
@@ -26,10 +26,18 @@ const nextConfig = {
   },
   publicRuntimeConfig: {
     basePath: isProd ? "/legendary-happiness" : "",
+    assetPrefix: isProd ? "/legendary-happiness/" : "",
   },
   env: {
     BASE_PATH: isProd ? "/legendary-happiness" : "",
+    ASSET_PREFIX: isProd ? "/legendary-happiness/" : "",
   },
+  exportPathMap: function() {
+    return {
+      '/': { page: '/' }
+    }
+  },
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;

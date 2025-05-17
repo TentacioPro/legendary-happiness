@@ -29,15 +29,18 @@ jobs:
           mkdir -p out/public
           cp -r public/* out/public/
           cp -r public/* out/
+          # Copy assets to gh-pages directory
+          mkdir -p gh-pages
+          cp -r public/* gh-pages/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
+          publish_dir: ./gh-pages
           publish_branch: gh-pages
-          force_orphan: true
-          clean: true
+          force_orphan: false
+          clean: false
           keep_files: true
           strip_html: false
           user_name: github-actions[bot]
@@ -51,3 +54,7 @@ jobs:
           verbose: true
           force_https: true
           nojekyll: true
+          # Add base path to HTML files
+          base_path: /legendary-happiness
+          # Add base path to assets
+          asset_path: /legendary-happiness
