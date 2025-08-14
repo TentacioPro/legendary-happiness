@@ -41,7 +41,7 @@ export default function about() {
         <MotionDiv delayOffset={0.4}>
           <CoolPortraitCard className="hidden lg:block">
             <img
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/cropped.jpg`}
+              src="/cropped.jpg"
               alt="photo"
               className="w-[350px] min-w-[300px] rounded-xl transition-all"
             />
@@ -49,7 +49,7 @@ export default function about() {
         </MotionDiv>
         <MotionDiv delayOffset={0.4}>
           <img
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/cropped.jpg`}
+            src="/cropped.jpg"
             alt="photo"
             className="w-[350px] min-w-[300px] rounded-xl transition-all hover:rotate-3 hover:scale-105 lg:hidden"
           />

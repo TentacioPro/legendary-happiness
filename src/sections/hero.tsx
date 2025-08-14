@@ -17,10 +17,7 @@ export default function hero() {
             loop
             playsInline
           >
-            <source
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/memoji_out.mp4`}
-              type="video/mp4"
-            />
+            <source src="/memoji_out.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </MotionDiv>
