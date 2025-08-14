@@ -25,24 +25,14 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Build project
-        run: |
-          pnpm build
-          # Copy build output to gh-pages directory
-          mkdir -p gh-pages
-          cp -r out/* gh-pages/
-          # Copy public assets to gh-pages
-          cp -r public/* gh-pages/
-          # Optimize images
-          find gh-pages -type f -name "*.jpg" -exec convert {} -strip -quality 85 {} \;
-          # Compress video (if you have ffmpeg installed)
-          # find gh-pages/public -type f -name "*.mp4" -exec ffmpeg -i {} -vcodec libx264 -crf 23 -preset veryfast -acodec copy {} \;
+        run: pnpm build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./gh-pages
+          publish_dir: ./out
           force_orphan: true
           keep_files: true
           user_name: github-actions[bot]
@@ -50,7 +40,3 @@ jobs:
           commit_message: Deploy to GitHub Pages
           enable_jekyll: false
           nojekyll: true
-          # Add asset optimization
-          asset_optimization: true
-          # Add maximum file size limit
-          max_file_size: 10000000  # 10MB
