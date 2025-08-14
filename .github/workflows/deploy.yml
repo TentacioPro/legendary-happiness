@@ -31,11 +31,9 @@ jobs:
           mkdir -p gh-pages
           cp -r out/* gh-pages/
           # Copy public assets to gh-pages
-          mkdir -p gh-pages/public
-          # Copy only optimized assets
-          cp -r public/* gh-pages/public/
+          cp -r public/* gh-pages/
           # Optimize images
-          find gh-pages/public -type f -name "*.jpg" -exec convert {} -strip -quality 85 {} \;
+          find gh-pages -type f -name "*.jpg" -exec convert {} -strip -quality 85 {} \;
           # Compress video (if you have ffmpeg installed)
           # find gh-pages/public -type f -name "*.mp4" -exec ffmpeg -i {} -vcodec libx264 -crf 23 -preset veryfast -acodec copy {} \;
 
