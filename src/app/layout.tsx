@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+// import { Montserrat } from "next/font/google";
 import Header from "@/components/header";
 import BackToTop from "@/components/back-to-top";
 import GridBackground from "@/components/grid-background";
 
-const montserrat = Montserrat({ subsets: ["latin"] });
+// Temporarily use system fonts due to build environment constraints
+// const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Abishek Maharajan | Portfolio",
   metadataBase: new URL("https://www.abishek-maharajan.online"),
@@ -37,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className="font-sans">{/* Changed from montserrat.className to use system fonts */}
         <Header />
         <GridBackground />
         <main className="container overflow-x-hidden lg:px-28">{children}</main>
