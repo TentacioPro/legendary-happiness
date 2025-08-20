@@ -1,6 +1,7 @@
 import ContactList from "@/components/contact-list";
 import MotionText from "@/components/motion-text";
 import MotionDiv from "@/components/motion-div";
+import { getAssetPath } from "@/utils/paths";
 
 export default function hero() {
   return (
@@ -17,7 +18,7 @@ export default function hero() {
             loop
             playsInline
           >
-            <source src="/memoji_out.mp4" type="video/mp4" />
+            <source src={getAssetPath("memoji_out.mp4")} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </MotionDiv>

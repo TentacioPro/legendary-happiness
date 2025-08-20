@@ -33,21 +33,9 @@ const nextConfig = {
     ASSET_PREFIX: isProd ? "/legendary-happiness/" : "",
   },
   trailingSlash: true,
-  // For static export with App Router
   experimental: {
-    appDir: true,
     optimizePackageImports: ['lucide-react']
-  },
-  // Add proper export path map for App Router
-  generateStaticParams: async () => {
-    return [
-      { slug: 'index' }
-    ];
-  },
-  // Add base path to HTML files
-  basePath: isProd ? '/legendary-happiness' : '',
-  // Add base path to assets
-  assetPrefix: isProd ? '/legendary-happiness/' : ''
+  }
 };
 
 module.exports = nextConfig;
