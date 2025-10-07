@@ -9,7 +9,7 @@ import GridBackground from "@/components/grid-background";
 // const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Abishek Maharajan | Portfolio",
-  metadataBase: new URL("https://www.abishek-maharajan.online"),
+  metadataBase: new URL("https://abishekmaharajan.online"),
   alternates: {
     canonical: "/",
   },
