@@ -1,18 +1,24 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === "production";
+// We no longer need the 'isProd' variable
+// const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
   output: "export",
   images: {
     unoptimized: true,
-    domains: ["localhost"],
-    path: "/legendary-happiness/_next/image/",
+    // The 'path' property was also hardcoded and needs to be removed
+    // to use the correct default path.
+    domains: ["localhost"], // This is fine, though likely not used in production
     loader: "default",
     minimumCacheTTL: 60,
     formats: ["image/webp"],
   },
-  basePath: isProd ? "/legendary-happiness" : "",
-  assetPrefix: isProd ? "/legendary-happiness/" : "",
+  
+  // --- THESE ARE THE KEY FIXES ---
+  // Set them to the root directory
+  basePath: "",
+  assetPrefix: "",
+  
   staticPageGenerationTimeout: 60,
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -24,14 +30,11 @@ const nextConfig = {
     }
     return config;
   },
-  publicRuntimeConfig: {
-    basePath: isProd ? "/legendary-happiness" : "",
-    assetPrefix: isProd ? "/legendary-happiness/" : "",
-  },
-  env: {
-    BASE_PATH: isProd ? "/legendary-happiness" : "",
-    ASSET_PREFIX: isProd ? "/legendary-happiness/" : "",
-  },
+
+  // --- REMOVED REDUNDANT/INCORRECT CONFIGS ---
+  // The 'publicRuntimeConfig' and 'env' blocks were
+  // also adding the incorrect paths and are not needed.
+  
   trailingSlash: true,
   experimental: {
     optimizePackageImports: ['lucide-react']
