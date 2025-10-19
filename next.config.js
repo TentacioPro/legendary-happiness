@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 // We no longer need the 'isProd' variable
-// const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
   output: "export",
@@ -8,7 +7,7 @@ const nextConfig = {
     unoptimized: true,
     // The 'path' property was also hardcoded and needs to be removed
     // to use the correct default path.
-    domains: ["localhost"], // This is fine, though likely not used in production
+    domains: ["localhost"],
     loader: "default",
     minimumCacheTTL: 60,
     formats: ["image/webp"],
@@ -31,9 +30,9 @@ const nextConfig = {
     return config;
   },
 
-  // --- REMOVED REDUNDANT/INCORRECT CONFIGS ---
+  // --- REDUNDANT/INCORRECT CONFIGS REMOVED ---
   // The 'publicRuntimeConfig' and 'env' blocks were
-  // also adding the incorrect paths and are not needed.
+  // also adding incorrect paths and are not needed.
   
   trailingSlash: true,
   experimental: {
