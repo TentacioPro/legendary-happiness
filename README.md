@@ -44,5 +44,6 @@ I'm Abishek Maharajan, a passionate technology enthusiast and full-stack develop
 - Modern UI components with Shadcn/ui
 - Optimized performance
 - SEO-friendly structure
+- Custom domain with HTTPS
 
 
