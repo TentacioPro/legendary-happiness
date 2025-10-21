@@ -34,7 +34,8 @@ jobs:
           publish_branch: gh-pages
           publish_dir: ./out
           force_orphan: true
-          keep_files: true
+          keep_files: false
+          cname: abishek-maharajan.online
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: Deploy to GitHub Pages
