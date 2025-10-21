@@ -27,6 +27,9 @@ jobs:
       - name: Build project
         run: pnpm build
 
+      - name: Add .nojekyll file
+        run: echo "" > ./out/.nojekyll
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -39,5 +42,3 @@ jobs:
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           commit_message: Deploy to GitHub Pages
-          enable_jekyll: false
-          nojekyll: true
