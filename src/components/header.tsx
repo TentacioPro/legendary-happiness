@@ -15,7 +15,6 @@ export default function Header() {
   const scrollLinks = ["about", "skills", "contact"];
   const pageLinks = [
     { name: "Resume", href: "/resume" },
-    { name: "Analytics", href: "/analytics" },
     { name: "Docs", href: "/docs" },
   ];
 
