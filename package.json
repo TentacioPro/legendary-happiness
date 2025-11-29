@@ -73,7 +73,10 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp"
-    ]
+    ],
+    "overrides": {
+      "cross-spawn": ">=6.0.6"
+    }
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
