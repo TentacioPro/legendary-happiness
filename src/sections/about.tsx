@@ -6,13 +6,15 @@ export default function about() {
   return (
     <section
       id="about"
-      className="mx-auto my-16 flex flex-col items-center justify-center gap-4 px-2 md:my-20  md:max-w-full lg:flex-row lg:items-start lg:gap-16"
+      className="mx-auto my-16 flex flex-col items-center justify-center gap-6 px-4 sm:px-6 md:my-20 md:gap-8 lg:flex-row lg:items-start lg:gap-16"
     >
       <div className="order-2 lg:order-1 lg:w-2/3">
         <MotionDiv delayOffset={0.2}>
-          <h2 className="mb-3 w-full text-center md:mb-6">About Me</h2>
+          <h2 className="mb-4 w-full text-center text-2xl sm:text-3xl md:mb-6 md:text-4xl">
+            About Me
+          </h2>
         </MotionDiv>
-        <article className="flex flex-col gap-4">
+        <article className="flex flex-col gap-4 text-base leading-relaxed sm:text-lg md:gap-6">
           <MotionDiv delayOffset={0.4}>
             <p>
               Hello, I'm Abishek Maharajan, a passionate technology enthusiast

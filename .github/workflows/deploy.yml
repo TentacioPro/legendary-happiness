@@ -24,6 +24,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Security audit
+        run: pnpm run security:audit
+        continue-on-error: false
+
+      - name: Run linter
+        run: pnpm lint
+
+      - name: Run tests
+        run: pnpm test:ci
+
       - name: Build project
         run: pnpm build
 

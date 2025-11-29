@@ -1,0 +1,239 @@
+# Portfolio Website Architecture
+
+## Project Overview
+
+A modern, single-page portfolio website built with Next.js 14, showcasing skills, projects, and contact information with smooth animations and responsive design.
+
+**Live URL**: https://www.abishek-maharajan.online  
+**Tech Stack**: Next.js 14, React 18, TypeScript, TailwindCSS, Framer Motion, Shadcn/ui  
+**Deployment**: GitHub Pages (static export)
+
+---
+
+## Architecture & Structure
+
+### Core Technology Decisions
+
+1. **Next.js 14 with Static Export** (`output: "export"`)
+   - Generates static HTML/CSS/JS for GitHub Pages hosting
+   - No server-side rendering required
+   - Optimized for performance and SEO
+
+2. **Single Page Application (SPA)**
+   - All content on one page (`src/app/page.tsx`)
+   - Smooth scroll navigation between sections
+   - No routing needed
+
+3. **Component-Based Architecture**
+   - Reusable UI components in `src/components/`
+   - Section-based content organization in `src/sections/`
+   - Shadcn/ui for base UI primitives
+
+---
+
+## File Structure
+
+```
+abishek-portfolio/
+├── .github/workflows/
+│   └── deploy.yml          # GitHub Actions CI/CD
+├── public/
+│   ├── cropped.jpg         # Profile photo
+│   ├── memoji_out_optimized.mp4  # Optimized avatar (191 KB)
+│   └── memoji_poster.jpg   # Video poster (4.55 KB)
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx      # Root layout
+│   │   ├── page.tsx        # Main portfolio page
+│   │   └── globals.css     # Global styles
+│   ├── components/
+│   │   ├── ui/             # Shadcn/ui primitives
+│   │   ├── motion-*.tsx    # Animation wrappers
+│   │   └── *.tsx           # Reusable components
+│   ├── sections/
+│   │   ├── hero.tsx        # Landing section
+│   │   ├── about.tsx       # About section
+│   │   ├── skills.tsx      # Skills showcase
+│   │   └── contact.tsx     # Contact section
+│   ├── lib/
+│   │   ├── utils.ts        # Utilities
+│   │   ├── logger.ts       # Logging
+│   │   ├── secureLink.ts   # Secure links
+│   │   └── webVitals.ts    # Performance monitoring
+│   └── utils/
+│       └── paths.ts        # Asset path helper
+├── pages/
+│   └── docs/               # Documentation (Nextra)
+├── next.config.mjs         # Next.js + Nextra config
+├── theme.config.jsx        # Nextra theme config
+└── package.json
+```
+
+---
+
+## Content Structure
+
+### Page Layout
+
+The main page (`src/app/page.tsx`) renders four sections:
+
+```tsx
+<Hero />      // Introduction & animated avatar
+<About />     // Personal background & photo
+<Skills />    // Technical skills categorized
+<Contact />   // Social links & contact info
+```
+
+### Section Breakdown
+
+#### 1. Hero Section
+- Greeting with animated text
+- Memoji video (160x190px, optimized)
+- Role titles with staggered animations
+- Inspirational quote
+- Social media links
+
+#### 2. About Section
+- Two-column responsive layout
+- Personal story and background
+- 3D portrait card (desktop)
+- Animated text reveals
+
+#### 3. Skills Section
+- 5 categorized skill groups:
+  - Programming (6 skills)
+  - Web Development (8 skills)
+  - Data & Analytics (3 skills)
+  - AI/ML & LLMs (3 skills)
+  - DevOps & Infrastructure (7 skills)
+
+#### 4. Contact Section
+- Call-to-action message
+- Social media links
+- Contact buttons
+
+---
+
+## Performance Optimizations
+
+### LCP Optimization
+
+**Hero Video Optimization**:
+- Original: 48.8 MB → Optimized: 191 KB (99.6% reduction)
+- Dimensions: 160x190px (natural portrait)
+- Preload: metadata only
+- Poster image: 4.55 KB JPEG
+
+**Results**:
+- LCP: 1.0-1.5 seconds (from 5-8 seconds)
+- Performance Score: 90-95 (from < 50)
+- Bandwidth Savings: 48.6 MB per page load
+
+### Build Optimizations
+
+1. Static Export (pure HTML/CSS/JS)
+2. Code Splitting (automatic)
+3. Tree Shaking (remove unused code)
+4. Package optimization (lucide-react)
+
+---
+
+## Security & Observability
+
+### Security Headers
+
+Implemented in `next.config.mjs`:
+- Strict-Transport-Security (HSTS)
+- X-Frame-Options
+- X-Content-Type-Options
+- Content-Security-Policy
+- And more...
+
+### Monitoring
+
+**Web Vitals Tracking**:
+- LCP (Largest Contentful Paint)
+- INP (Interaction to Next Paint)
+- CLS (Cumulative Layout Shift)
+- FCP (First Contentful Paint)
+- TTFB (Time to First Byte)
+
+**Error Handling**:
+- React Error Boundary
+- Structured logging
+- Performance tracking
+
+---
+
+## Dependencies
+
+### Core
+- `next@14.2.32` - React framework
+- `react@18.2.0` - UI library
+- `typescript@5.9.3` - Type checking
+
+### Documentation
+- `nextra@4.6.0` - Documentation framework
+- `nextra-theme-docs@4.6.0` - Documentation theme
+
+### Styling
+- `tailwindcss@3.4.17` - Utility-first CSS
+- `framer-motion@11.0.5` - Animations
+
+### Icons
+- `@fortawesome/*` - FontAwesome icons
+- `lucide-react@0.331.0` - Lucide icons
+
+---
+
+## Design Principles
+
+### Visual Hierarchy
+- Clear typography scale
+- Consistent spacing
+- Minimal color palette
+- Generous whitespace
+
+### User Experience
+- Smooth scroll navigation
+- Hover states on interactive elements
+- Accessibility (ARIA labels, semantic HTML)
+- Fast load times
+
+### Brand Identity
+- GoldenSignature font for logo
+- Clean, modern, minimal design
+- Professional with personality
+- Consistent patterns
+
+---
+
+## Key Takeaways
+
+### What Makes This Portfolio Effective
+
+1. **Single Page Design** - All content accessible without navigation
+2. **Progressive Disclosure** - Animations reveal content as user scrolls
+3. **Mobile-First** - Works perfectly on all devices
+4. **Fast Loading** - Static export = instant page loads
+5. **Easy Maintenance** - Component-based, clear structure
+6. **Professional Polish** - Smooth animations, consistent design
+7. **SEO Optimized** - Proper meta tags, semantic HTML
+8. **Accessible** - ARIA labels, keyboard navigation
+
+### Architecture Highlights
+
+1. **Separation of Concerns** - Clear file organization
+2. **Reusability** - Motion components used throughout
+3. **Configurability** - Easy to update content
+4. **Scalability** - Easy to add new features
+5. **Type Safety** - TypeScript prevents errors
+6. **Modern Stack** - Latest React patterns
+
+---
+
+## Next Steps
+
+- [Getting Started →](/docs/getting-started)
+- [Components Guide →](/docs/components)
+- [Deployment Guide →](/docs/deployment)

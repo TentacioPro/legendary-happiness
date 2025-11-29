@@ -1,3 +1,5 @@
+"use client";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -19,6 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { analytics } from "@/lib/analytics";
 type Contact = {
   name: string;
   className: string;
@@ -71,6 +74,13 @@ export default function ContactList({
   delayOffset?: number;
   showWhenInView?: boolean;
 }) {
+  const handleContactClick = (contactName: string, href: string) => {
+    analytics.trackContactClick(contactName, {
+      targetUrl: href,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
   return (
     <MotionList delayOffset={delayOffset} showWhenInView={showWhenInView}>
       {contacts.map((contact, index) => (
@@ -88,7 +98,9 @@ export default function ContactList({
                 <Link
                   href={contact.href}
                   target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={contact.name}
+                  onClick={() => handleContactClick(contact.name, contact.href)}
                 >
                   <FontAwesomeIcon icon={contact.icon} className="size-6" />
                 </Link>

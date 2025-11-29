@@ -1,0 +1,472 @@
+# Learning Dashboard Blueprint
+
+## Executive Summary
+
+This document outlines the high-level architectural plan for a comprehensive Learning Progress Tracker dashboard. The system will enable tracking of learning activities, goal progress, skill development, and knowledge acquisition across multiple domains.
+
+## System Overview
+
+### Purpose
+- Track learning activities across multiple subjects/technologies
+- Monitor progress toward learning goals
+- Visualize skill development over time
+- Provide insights into learning patterns and effectiveness
+
+### Core Principles
+1. **Verification-First**: All logic must have corresponding unit tests
+2. **Observability**: Structured logging for all user interactions
+3. **Responsive Design**: Mobile-first, fluid across all breakpoints
+4. **Performance**: Optimized for fast load times and smooth interactions
+5. **Extensibility**: Modular architecture for easy feature additions
+
+## Data Model
+
+### Core Entities
+
+#### 1. LearningActivity
+```typescript
+interface LearningActivity {
+  id: string;
+  userId: string;
+  activityType: ActivityType; // 'course' | 'book' | 'project' | 'practice' | 'video'
+  title: string;
+  description?: string;
+  category: string; // 'programming' | 'design' | 'language' | 'business'
+  tags: string[];
+  duration: number; // minutes
+  completionStatus: 'not_started' | 'in_progress' | 'completed';
+  completionPercentage: number; // 0-100
+  startDate: string; // ISO 8601
+  endDate?: string; // ISO 8601
+  notes?: string;
+  resources: Resource[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Resource {
+  type: 'link' | 'file' | 'video';
+  url: string;
+  title: string;
+}
+```
+
+#### 2. LearningGoal
+```typescript
+interface LearningGoal {
+  id: string;
+  userId: string;
+  title: string;
+  description: string;
+  category: string;
+  targetDate: string; // ISO 8601
+  priority: 'low' | 'medium' | 'high';
+  status: 'active' | 'completed' | 'paused' | 'abandoned';
+  milestones: Milestone[];
+  relatedActivities: string[]; // Activity IDs
+  progress: number; // 0-100, calculated from milestones
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Milestone {
+  id: string;
+  title: string;
+  description?: string;
+  targetDate: string;
+  completed: boolean;
+  completedAt?: string;
+}
+```
+
+#### 3. SkillLevel
+```typescript
+interface SkillLevel {
+  id: string;
+  userId: string;
+  skillName: string;
+  category: string;
+  currentLevel: 1 | 2 | 3 | 4 | 5; // 1=Beginner, 5=Expert
+  targetLevel: 1 | 2 | 3 | 4 | 5;
+  assessmentDate: string;
+  evidence: string[]; // Activity IDs that demonstrate this skill
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+```
+
+#### 4. StudySession
+```typescript
+interface StudySession {
+  id: string;
+  userId: string;
+  activityId: string;
+  startTime: string; // ISO 8601
+  endTime: string; // ISO 8601
+  duration: number; // minutes, calculated
+  focusScore?: number; // 1-10, self-reported
+  notes?: string;
+  achievements: string[]; // What was accomplished
+  challenges: string[]; // What was difficult
+  createdAt: string;
+}
+```
+
+## Routing Strategy
+
+### Route Structure
+```
+/dashboard                    - Main dashboard overview
+/dashboard/activities         - List and manage learning activities
+/dashboard/activities/new     - Create new activity
+/dashboard/activities/[id]    - View/edit specific activity
+/dashboard/goals              - Learning goals overview
+/dashboard/goals/new          - Create new goal
+/dashboard/goals/[id]         - View/edit specific goal
+/dashboard/skills             - Skills matrix and tracking
+/dashboard/sessions           - Study session history
+/dashboard/analytics          - Learning analytics and insights
+/dashboard/settings           - Dashboard preferences
+```
+
+### Navigation Structure
+```
+Header
+├── Dashboard (/)
+├── Activities (/dashboard/activities)
+├── Goals (/dashboard/goals)
+├── Skills (/dashboard/skills)
+└── Analytics (/dashboard/analytics)
+```
+
+## Component Architecture
+
+### Page Components
+
+#### 1. Dashboard Overview (`/dashboard/page.tsx`)
+- **Purpose**: High-level summary of learning progress
+- **Key Metrics**:
+  - Total learning hours (this week/month)
+  - Active goals count
+  - Completion rate
+  - Current streak
+- **Visualizations**:
+  - Weekly activity heatmap
+  - Goal progress bars
+  - Recent activities timeline
+  - Skills radar chart
+
+#### 2. Activities Page (`/dashboard/activities/page.tsx`)
+- **Purpose**: Manage all learning activities
+- **Features**:
+  - Filterable/sortable activity list
+  - Quick add activity form
+  - Bulk actions (mark complete, delete)
+  - Category grouping
+- **State Management**: React Query for data fetching
+
+#### 3. Goals Page (`/dashboard/goals/page.tsx`)
+- **Purpose**: Track and manage learning goals
+- **Features**:
+  - Goal cards with progress indicators
+  - Milestone tracking
+  - Goal timeline view
+  - Priority sorting
+
+#### 4. Skills Matrix (`/dashboard/skills/page.tsx`)
+- **Purpose**: Visualize skill levels and growth
+- **Features**:
+  - Interactive skill grid
+  - Skill level indicators
+  - Growth trajectory charts
+  - Skill gap analysis
+
+### Shared Components
+
+```typescript
+// Core UI Components
+<ActivityCard />          // Display single activity
+<GoalCard />             // Display single goal
+<ProgressBar />          // Reusable progress indicator
+<SkillBadge />           // Skill level indicator
+<TimelineItem />         // Activity timeline entry
+<StatCard />             // Metric display card
+<FilterBar />            // Activity/goal filtering
+<DateRangePicker />      // Date selection
+<CategorySelector />     // Category dropdown
+<DurationInput />        // Time duration input
+```
+
+## Verification Gates
+
+### Unit Tests Required
+
+#### 1. Data Model Tests
+```typescript
+// src/lib/dashboard/__tests__/models.test.ts
+describe('LearningActivity Model', () => {
+  it('should calculate completion percentage correctly');
+  it('should validate activity type');
+  it('should handle date parsing');
+});
+
+describe('LearningGoal Model', () => {
+  it('should calculate progress from milestones');
+  it('should validate target date is in future');
+  it('should update status based on completion');
+});
+```
+
+#### 2. Progress Calculation Tests
+```typescript
+// src/lib/dashboard/__tests__/calculations.test.ts
+describe('Progress Calculations', () => {
+  it('should calculate goal progress from milestones');
+  it('should calculate total learning hours');
+  it('should calculate completion rate');
+  it('should calculate current streak');
+  it('should handle edge cases (no activities, all incomplete)');
+});
+```
+
+#### 3. Component Tests
+```typescript
+// src/components/dashboard/__tests__/ActivityCard.test.tsx
+describe('ActivityCard Component', () => {
+  it('should render activity details correctly');
+  it('should handle completion toggle');
+  it('should display progress bar for in-progress activities');
+  it('should format duration correctly');
+});
+```
+
+#### 4. Integration Tests
+```typescript
+// src/app/dashboard/__tests__/integration.test.tsx
+describe('Dashboard Integration', () => {
+  it('should load and display activities');
+  it('should filter activities by category');
+  it('should update goal progress when activity completed');
+  it('should track analytics events');
+});
+```
+
+### Test Coverage Goals
+- **Unit Tests**: 90%+ coverage for business logic
+- **Component Tests**: 80%+ coverage for UI components
+- **Integration Tests**: Critical user flows covered
+
+## Data Storage Strategy
+
+### Phase 1: Local Storage (MVP)
+- Store data in browser localStorage
+- JSON serialization
+- Simple CRUD operations
+- No backend required
+
+### Phase 2: Backend Integration
+- RESTful API endpoints
+- PostgreSQL database
+- Authentication (NextAuth.js)
+- Data synchronization
+
+### Phase 3: Real-time Sync
+- WebSocket connections
+- Optimistic updates
+- Conflict resolution
+- Offline support
+
+## Analytics Integration
+
+### Events to Track
+```typescript
+enum DashboardEvent {
+  ACTIVITY_CREATED = 'dashboard_activity_created',
+  ACTIVITY_COMPLETED = 'dashboard_activity_completed',
+  GOAL_CREATED = 'dashboard_goal_created',
+  GOAL_COMPLETED = 'dashboard_goal_completed',
+  MILESTONE_COMPLETED = 'dashboard_milestone_completed',
+  STUDY_SESSION_STARTED = 'dashboard_session_started',
+  STUDY_SESSION_ENDED = 'dashboard_session_ended',
+  SKILL_UPDATED = 'dashboard_skill_updated',
+}
+```
+
+### Integration with Existing Logger
+```typescript
+// Use existing structured logger
+import { logger } from '@/lib/logger';
+import { analytics } from '@/lib/analytics';
+
+// Track dashboard events
+logger.trackEvent('dashboard_activity_created', {
+  activityType: 'course',
+  category: 'programming',
+  duration: 120,
+});
+
+analytics.trackEvent(AnalyticsEventType.DASHBOARD_EVENT, {
+  eventName: 'activity_created',
+  properties: { /* ... */ },
+});
+```
+
+## UI/UX Design Principles
+
+### Visual Design
+- **Color Scheme**: 
+  - Primary: Blue (#3B82F6) - Trust, learning
+  - Success: Green (#10B981) - Completion, growth
+  - Warning: Yellow (#F59E0B) - In progress
+  - Neutral: Gray scale for backgrounds
+- **Typography**: Inter font (already implemented)
+- **Spacing**: Consistent 4px grid system
+- **Shadows**: Subtle elevation for cards
+
+### Responsive Breakpoints
+```css
+/* Mobile First */
+sm: 640px   /* Small tablets */
+md: 768px   /* Tablets */
+lg: 1024px  /* Laptops */
+xl: 1280px  /* Desktops */
+2xl: 1536px /* Large screens */
+```
+
+### Accessibility
+- ARIA labels on all interactive elements
+- Keyboard navigation support
+- Screen reader friendly
+- Color contrast ratio ≥ 4.5:1
+- Focus indicators
+
+## Performance Optimization
+
+### Code Splitting
+```typescript
+// Lazy load dashboard routes
+const DashboardActivities = lazy(() => import('./activities/page'));
+const DashboardGoals = lazy(() => import('./goals/page'));
+const DashboardSkills = lazy(() => import('./skills/page'));
+```
+
+### Data Fetching
+- React Query for caching and background updates
+- Optimistic updates for better UX
+- Pagination for large lists
+- Virtual scrolling for long lists
+
+### Bundle Size
+- Tree-shaking unused code
+- Dynamic imports for charts
+- Optimize images and icons
+- Minimize third-party dependencies
+
+## Security Considerations
+
+### Data Privacy
+- User data stored locally (Phase 1)
+- No PII in analytics events
+- Secure authentication (Phase 2)
+- HTTPS only
+
+### Input Validation
+- Sanitize all user inputs
+- Validate dates and numbers
+- Prevent XSS attacks
+- Rate limiting on API calls
+
+## Implementation Phases
+
+### Phase 1: Foundation (Week 1-2)
+- [ ] Set up routing structure
+- [ ] Create data models and types
+- [ ] Implement localStorage utilities
+- [ ] Build core UI components
+- [ ] Write unit tests for models
+
+### Phase 2: Core Features (Week 3-4)
+- [ ] Activities CRUD operations
+- [ ] Goals CRUD operations
+- [ ] Progress calculations
+- [ ] Dashboard overview page
+- [ ] Analytics integration
+
+### Phase 3: Advanced Features (Week 5-6)
+- [ ] Skills tracking
+- [ ] Study sessions
+- [ ] Charts and visualizations
+- [ ] Filtering and sorting
+- [ ] Export functionality
+
+### Phase 4: Polish (Week 7-8)
+- [ ] Responsive design refinement
+- [ ] Performance optimization
+- [ ] Accessibility audit
+- [ ] User testing
+- [ ] Documentation
+
+## Dependencies
+
+### Required Packages
+```json
+{
+  "dependencies": {
+    "@tanstack/react-query": "^5.0.0",  // Data fetching
+    "recharts": "^2.10.0",              // Charts
+    "date-fns": "^3.0.0",               // Date utilities
+    "zod": "^3.22.0",                   // Schema validation
+    "zustand": "^4.4.0"                 // State management (optional)
+  }
+}
+```
+
+### Installation
+```bash
+npm install @tanstack/react-query recharts date-fns zod
+```
+
+## Success Metrics
+
+### Technical Metrics
+- Test coverage ≥ 85%
+- Lighthouse score ≥ 90
+- Bundle size < 200KB (gzipped)
+- First Contentful Paint < 1.5s
+- Time to Interactive < 3s
+
+### User Metrics
+- Daily active users
+- Average session duration
+- Activities created per user
+- Goal completion rate
+- Feature adoption rate
+
+## Future Enhancements
+
+### Phase 5+
+- [ ] Mobile app (React Native)
+- [ ] Collaborative learning (share goals)
+- [ ] AI-powered recommendations
+- [ ] Spaced repetition system
+- [ ] Gamification (badges, streaks)
+- [ ] Integration with learning platforms (Coursera, Udemy)
+- [ ] Export to PDF/CSV
+- [ ] Dark mode
+- [ ] Multi-language support
+
+## References
+
+- [Next.js App Router Documentation](https://nextjs.org/docs/app)
+- [React Query Documentation](https://tanstack.com/query/latest)
+- [Recharts Documentation](https://recharts.org/)
+- [Tailwind CSS Responsive Design](https://tailwindcss.com/docs/responsive-design)
+- [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/WCAG21/quickref/)
+
+---
+
+**Document Version**: 1.0.0  
+**Last Updated**: 2024-11-29  
+**Author**: Abishek Maharajan  
+**Status**: Planning Phase
