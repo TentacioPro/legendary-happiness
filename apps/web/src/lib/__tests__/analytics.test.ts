@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { AnalyticsEventType } from "../analytics";
+import { AnalyticsEventType } from "@portfolio/types";
 
 // Mock the analytics module to avoid actual API calls in tests
 vi.mock("../analytics", async () => {
