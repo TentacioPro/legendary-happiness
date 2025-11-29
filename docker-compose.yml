@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   # PostgreSQL Database
   postgres:
@@ -87,7 +85,7 @@ services:
         condition: service_started
     networks:
       - learning-network
-    command: npm run dev
+    command: pnpm run dev
 
   # Web Frontend (Next.js)
   web:
@@ -108,7 +106,7 @@ services:
       - api-gateway
     networks:
       - learning-network
-    command: npm run dev
+    command: pnpm run dev
 
 networks:
   learning-network:
