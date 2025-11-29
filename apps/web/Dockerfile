@@ -1,18 +1,28 @@
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /workspace
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy package files
-COPY package*.json ./
+# Copy workspace configuration
+COPY pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
+# Copy packages (shared types)
+COPY packages ./packages
+
+# Copy web app
+COPY apps/web ./apps/web
+
+# Install all dependencies (workspace-aware)
 RUN pnpm install --no-frozen-lockfile
 
-# Copy application code
-COPY . .
+# Build shared types package
+RUN pnpm --filter @portfolio/types build
+
+# Set working directory to web app
+WORKDIR /workspace/apps/web
 
 # Expose port
 EXPOSE 3000

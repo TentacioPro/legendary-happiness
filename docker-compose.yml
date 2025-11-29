@@ -90,18 +90,20 @@ services:
   # Web Frontend (Next.js)
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/web/Dockerfile
     container_name: learning-dashboard-web
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - NEXT_PUBLIC_API_GATEWAY_URL=http://localhost:3001
       - NODE_ENV=development
     ports:
       - "3002:3000"
     volumes:
-      - ./apps/web:/app
-      - /app/node_modules
-      - /app/.next
+      - ./apps/web:/workspace/apps/web
+      - ./packages:/workspace/packages
+      - /workspace/apps/web/node_modules
+      - /workspace/apps/web/.next
+      - /workspace/node_modules
     depends_on:
       - api-gateway
     networks:
