@@ -1,0 +1,228 @@
+# Deployment
+
+Complete guide to deploying the portfolio to GitHub Pages and other platforms.
+
+## GitHub Pages Deployment
+
+### Automatic Deployment
+
+The project includes a GitHub Actions workflow for automatic deployment.
+
+**Workflow File**: `.github/workflows/deploy.yml`
+
+**Trigger**: Push to `main` branch
+
+**Steps**:
+1. Checkout repository
+2. Setup pnpm
+3. Install dependencies
+4. Build static site
+5. Deploy to `gh-pages` branch
+
+### Manual Deployment
+
+Deploy manually using the deploy script:
+
+```bash
+pnpm build
+pnpm deploy
+```
+
+---
+
+## GitHub Pages Setup
+
+### 1. Enable GitHub Pages
+
+1. Go to repository **Settings**
+2. Navigate to **Pages** section
+3. Set source to `gh-pages` branch
+4. Set folder to `/ (root)`
+5. Click **Save**
+
+### 2. Configure Custom Domain (Optional)
+
+1. Add `CNAME` file to `public/` directory:
+```
+www.your-domain.com
+```
+
+2. Configure DNS records:
+```
+Type: CNAME
+Name: www
+Value: yourusername.github.io
+```
+
+3. Enable HTTPS in GitHub Pages settings
+
+---
+
+## Build Configuration
+
+### Next.js Static Export
+
+**File**: `next.config.mjs`
+
+```javascript
+const nextConfig = {
+  output: "export",              // Enable static export
+  images: { unoptimized: true }, // Disable image optimization
+  basePath: "",                  // Root directory
+  trailingSlash: true,           // Add trailing slashes
+}
+```
+
+### Build Output
+
+**Directory**: `/out`
+
+**Contents**:
+- Static HTML files
+- Optimized CSS bundles
+- JavaScript chunks
+- Public assets
+- `_next/` directory
+
+---
+
+## Alternative Platforms
+
+### Vercel
+
+1. Import repository on [Vercel](https://vercel.com)
+2. Configure build:
+   - Framework: Next.js
+   - Build Command: `pnpm build`
+   - Output Directory: `out`
+3. Deploy
+
+### Netlify
+
+1. Connect repository on [Netlify](https://netlify.com)
+2. Configure build:
+   - Build Command: `pnpm build`
+   - Publish Directory: `out`
+3. Deploy
+
+### Cloudflare Pages
+
+1. Connect repository on [Cloudflare Pages](https://pages.cloudflare.com)
+2. Configure build:
+   - Build Command: `pnpm build`
+   - Build Output Directory: `out`
+3. Deploy
+
+---
+
+## Deployment Checklist
+
+### Pre-Deployment
+
+- [ ] Run tests: `pnpm test:run`
+- [ ] Run linter: `pnpm lint`
+- [ ] Format code: `pnpm format`
+- [ ] Build locally: `pnpm build`
+- [ ] Test build: `pnpm start`
+- [ ] Check for console errors
+- [ ] Verify responsive design
+
+### Post-Deployment
+
+- [ ] Verify site loads correctly
+- [ ] Check all links work
+- [ ] Test navigation
+- [ ] Verify images load
+- [ ] Check video playback
+- [ ] Test on mobile devices
+- [ ] Run Lighthouse audit
+- [ ] Check Web Vitals
+
+---
+
+## Performance Optimization
+
+### Build Optimizations
+
+1. Static Export (pure HTML/CSS/JS)
+2. Code Splitting (automatic)
+3. Tree Shaking (remove unused code)
+4. Minification (compress assets)
+
+### Asset Optimization
+
+1. Images: Use WebP format
+2. Videos: Compress with FFmpeg
+3. Fonts: Subset and preload
+4. Icons: Use SVG or icon fonts
+
+---
+
+## Monitoring & Analytics
+
+### Web Vitals
+
+Track performance metrics:
+- LCP (Largest Contentful Paint)
+- INP (Interaction to Next Paint)
+- CLS (Cumulative Layout Shift)
+- FCP (First Contentful Paint)
+- TTFB (Time to First Byte)
+
+**Implementation**: `src/lib/webVitals.ts`
+
+---
+
+## Troubleshooting
+
+### Build Errors
+
+**Error**: `Image Optimization using Next.js' default loader is not compatible with export`
+
+**Solution**: Set `images: { unoptimized: true }` in `next.config.mjs`
+
+---
+
+**Error**: `Module not found: Can't resolve 'fs'`
+
+**Solution**: Add webpack fallback in `next.config.mjs`
+
+---
+
+### Deployment Issues
+
+**Issue**: Assets not loading on GitHub Pages
+
+**Solution**: 
+- Check `basePath` and `assetPrefix`
+- Use `getAssetPath()` utility
+- Ensure `trailingSlash: true`
+
+---
+
+## Security Considerations
+
+### Security Headers
+
+Implemented in `next.config.mjs`:
+- Strict-Transport-Security (HSTS)
+- X-Frame-Options
+- X-Content-Type-Options
+- Content-Security-Policy
+
+### Best Practices
+
+1. Always use HTTPS in production
+2. Keep dependencies updated
+3. Never commit secrets
+4. Configure CSP properly
+5. Restrict cross-origin requests
+
+---
+
+## Resources
+
+- [Next.js Deployment Documentation](https://nextjs.org/docs/deployment)
+- [GitHub Pages Documentation](https://docs.github.com/en/pages)
+- [Web Vitals](https://web.dev/vitals/)
+- [Lighthouse](https://developers.google.com/web/tools/lighthouse)
