@@ -1,26 +1,12 @@
 /**
  * Analytics Data Collection Module
  * Handles event tracking and data collection for analytics dashboard
+ * Uses Golden Schema from @portfolio/types for type safety
  */
 
 import { logger } from "./logger";
-
-export enum AnalyticsEventType {
-  PAGE_VIEW = "page_view",
-  LINK_CLICK = "link_click",
-  RESUME_DOWNLOAD = "resume_download",
-  RESUME_VIEW = "resume_view",
-  CONTACT_CLICK = "contact_click",
-}
-
-export interface AnalyticsEvent {
-  eventType: AnalyticsEventType;
-  timestamp: string;
-  properties?: Record<string, any>;
-  sessionId?: string;
-  userAgent?: string;
-  url?: string;
-}
+import type { AnalyticsEvent, AnalyticsEventResponse } from "@portfolio/types";
+import { AnalyticsEventType } from "@portfolio/types";
 
 /**
  * Analytics Service
@@ -32,11 +18,12 @@ class AnalyticsService {
   private isEnabled: boolean;
 
   constructor() {
-    // Configure analytics endpoint (placeholder for now)
+    // Configure analytics endpoint - points to API Gateway
     this.endpoint =
-      process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT || "/api/analytics";
+      process.env.NEXT_PUBLIC_API_GATEWAY_URL || "http://localhost:3001";
     this.sessionId = this.generateSessionId();
-    this.isEnabled = process.env.NODE_ENV === "production";
+    // Enable in all environments for testing (fire-and-forget)
+    this.isEnabled = true;
   }
 
   /**
@@ -81,22 +68,14 @@ class AnalyticsService {
   }
 
   /**
-   * Send event to analytics endpoint
-   * This is a placeholder - integrate with your analytics service
+   * Send event to analytics endpoint (API Gateway)
+   * Fire-and-forget: fails gracefully without crashing UI
    */
   private async sendToEndpoint(event: AnalyticsEvent): Promise<void> {
-    // Placeholder implementation
-    // Replace with actual API call to your analytics service
-    // Examples:
-    // - Google Analytics 4
-    // - Plausible Analytics
-    // - Custom backend endpoint
-    // - Google Sheets API
-
     if (typeof window === "undefined") return;
 
     try {
-      const response = await fetch(this.endpoint, {
+      const response = await fetch(`${this.endpoint}/api/analytics/events`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,10 +86,16 @@ class AnalyticsService {
       if (!response.ok) {
         throw new Error(`Analytics endpoint returned ${response.status}`);
       }
-    } catch (error) {
-      // Silently fail in production to not disrupt user experience
+
+      const result: AnalyticsEventResponse = await response.json();
+
       if (process.env.NODE_ENV === "development") {
-        console.warn("Analytics endpoint not configured:", error);
+        console.log("✅ Analytics event tracked:", result);
+      }
+    } catch (error) {
+      // Fire-and-forget: silently fail to not disrupt user experience
+      if (process.env.NODE_ENV === "development") {
+        console.warn("⚠️ Analytics endpoint unavailable:", error);
       }
     }
   }
@@ -166,31 +151,3 @@ class AnalyticsService {
 
 // Export singleton instance
 export const analytics = new AnalyticsService();
-
-/**
- * Expected Analytics Endpoint Payload Structure
- *
- * POST /api/analytics
- * Content-Type: application/json
- *
- * {
- *   "eventType": "page_view" | "link_click" | "resume_download" | "contact_click",
- *   "timestamp": "2024-11-29T12:00:00.000Z",
- *   "properties": {
- *     "pageName": "home",
- *     "linkName": "GitHub",
- *     "targetUrl": "https://github.com/...",
- *     "version": "v2.4.1",
- *     "contactType": "email"
- *   },
- *   "sessionId": "session_1234567890_abc123",
- *   "userAgent": "Mozilla/5.0...",
- *   "url": "https://www.abishek-maharajan.online/"
- * }
- *
- * Integration Options:
- * 1. Google Sheets API: https://developers.google.com/sheets/api
- * 2. Vercel Analytics: https://vercel.com/analytics
- * 3. Plausible Analytics: https://plausible.io/docs/events-api
- * 4. Custom Backend: Create your own API endpoint
- */
