@@ -4,3 +4,4 @@
  */
 
 export * from './learning';
+export * from './analytics';
