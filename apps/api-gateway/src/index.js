@@ -38,7 +38,12 @@ app.get('/', (req, res) => {
   });
 });
 
-// API routes placeholder
+// Import routes
+const analyticsRoutes = require('./routes/analytics');
+
+// API routes
+app.use('/api/analytics', analyticsRoutes);
+
 app.get('/api/v1/status', (req, res) => {
   res.json({
     status: 'operational',
