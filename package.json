@@ -24,12 +24,8 @@
     "lint-staged": "^16.2.7"
   },
   "lint-staged": {
-    "apps/web/**/*.{ts,tsx,js,jsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "apps/web/**/*.{json,css,md}": [
-      "prettier --write"
+    "apps/web/**/*.{ts,tsx,js,jsx,json,css,md}": [
+      "cd apps/web && pnpm exec prettier --write"
     ]
   },
   "packageManager": "pnpm@10.6.1+sha512.40ee09af407fa9fbb5fbfb8e1cb40fbb74c0af0c3e10e9224d7b53c7658528615b2c92450e74cfad91e3a2dcafe3ce4050d80bda71d757756d2ce2b66213e9a3"
