@@ -8,10 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 import sys
 import os
 
-# Add types to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'types'))
+# Add shared_types to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from types.schemas import SourceType, ProcessingStatus
+from shared_types.schemas import SourceType, ProcessingStatus
 
 app = FastAPI(
     title="Learning Dashboard AI Engine",

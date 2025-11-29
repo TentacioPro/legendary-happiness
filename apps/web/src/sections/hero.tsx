@@ -12,7 +12,7 @@ export default function hero() {
       <div className="overflow-hidden rounded-full p-3 md:p-4">
         <MotionDiv>
           <video
-            className="h-[170px] w-[140px] md:h-[190px] md:w-[160px]"
+            className="h-[170px] w-[140px] object-contain md:h-[190px] md:w-[160px]"
             width="160"
             height="190"
             muted

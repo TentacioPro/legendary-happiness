@@ -50,7 +50,7 @@ services:
       - "8000:8000"
     volumes:
       - ./apps/ai-engine:/app
-      - ./packages/types/python:/app/types
+      - ./packages/types/python:/app/shared_types
     depends_on:
       postgres:
         condition: service_healthy
@@ -97,7 +97,7 @@ services:
       - NEXT_PUBLIC_API_URL=http://localhost:3001
       - NODE_ENV=development
     ports:
-      - "3000:3000"
+      - "3002:3000"
     volumes:
       - ./apps/web:/app
       - /app/node_modules
