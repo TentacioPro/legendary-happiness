@@ -21,6 +21,14 @@ export default function ResumePage() {
       version: RESUME_VERSION.version,
       fileName: RESUME_VERSION.fileName,
     });
+    
+    // Create a temporary link and trigger download
+    const link = document.createElement('a');
+    link.href = '/resume/Abishek_Maharajan_Resume.pdf';
+    link.download = RESUME_VERSION.fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
