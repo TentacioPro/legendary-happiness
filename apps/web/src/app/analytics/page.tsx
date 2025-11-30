@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import {
   BarChart3,
   TrendingUp,
   Users,
   MousePointerClick,
   Download,
+  Loader2,
 } from "lucide-react";
+import { useAnalyticsMetrics, useRecentEvents } from "@/hooks/useAnalytics";
 
 /**
  * Analytics Dashboard Page
@@ -49,13 +50,8 @@ function MetricCard({ title, value, change, icon }: MetricCardProps) {
 }
 
 export default function AnalyticsPage() {
-  // Placeholder data - replace with actual data from your analytics endpoint
-  const [metrics] = useState({
-    pageViews: 1234,
-    uniqueVisitors: 567,
-    linkClicks: 89,
-    resumeDownloads: 45,
-  });
+  const { metrics, loading: metricsLoading, error: metricsError } = useAnalyticsMetrics();
+  const { events, loading: eventsLoading } = useRecentEvents(10);
 
   return (
     <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
@@ -67,36 +63,47 @@ export default function AnalyticsPage() {
           </h1>
           <p className="text-gray-600">
             Track visitor engagement and portfolio performance metrics
+            {metricsError && (
+              <span className="ml-2 text-xs text-amber-600">
+                ({metricsError})
+              </span>
+            )}
           </p>
         </div>
 
         {/* Metrics Grid */}
-        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <MetricCard
-            title="Page Views"
-            value={metrics.pageViews.toLocaleString()}
-            change="+12% from last month"
-            icon={<BarChart3 className="h-6 w-6" />}
-          />
-          <MetricCard
-            title="Unique Visitors"
-            value={metrics.uniqueVisitors.toLocaleString()}
-            change="+8% from last month"
-            icon={<Users className="h-6 w-6" />}
-          />
-          <MetricCard
-            title="Link Clicks"
-            value={metrics.linkClicks.toLocaleString()}
-            change="+15% from last month"
-            icon={<MousePointerClick className="h-6 w-6" />}
-          />
-          <MetricCard
-            title="Resume Downloads"
-            value={metrics.resumeDownloads.toLocaleString()}
-            change="+20% from last month"
-            icon={<Download className="h-6 w-6" />}
-          />
-        </div>
+        {metricsLoading ? (
+          <div className="mb-8 flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          </div>
+        ) : (
+          <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <MetricCard
+              title="Page Views"
+              value={metrics.pageViews.toLocaleString()}
+              change="+12% from last month"
+              icon={<BarChart3 className="h-6 w-6" />}
+            />
+            <MetricCard
+              title="Unique Visitors"
+              value={metrics.uniqueVisitors.toLocaleString()}
+              change="+8% from last month"
+              icon={<Users className="h-6 w-6" />}
+            />
+            <MetricCard
+              title="Link Clicks"
+              value={metrics.linkClicks.toLocaleString()}
+              change="+15% from last month"
+              icon={<MousePointerClick className="h-6 w-6" />}
+            />
+            <MetricCard
+              title="Resume Downloads"
+              value={metrics.resumeDownloads.toLocaleString()}
+              change="+20% from last month"
+              icon={<Download className="h-6 w-6" />}
+            />
+          </div>
+        )}
 
         {/* Chart Placeholders */}
         <div className="grid gap-6 lg:grid-cols-2">
@@ -173,7 +180,7 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        {/* Recent Events Table Placeholder */}
+        {/* Recent Events Table */}
         <div className="mt-8 rounded-lg border bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-xl font-semibold">Recent Events</h2>
           <div className="overflow-x-auto">
@@ -186,12 +193,33 @@ export default function AnalyticsPage() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b">
-                  <td className="px-4 py-3 text-gray-500" colSpan={3}>
-                    No events data available. Configure analytics endpoint to
-                    see real-time events.
-                  </td>
-                </tr>
+                {eventsLoading ? (
+                  <tr>
+                    <td className="px-4 py-8 text-center" colSpan={3}>
+                      <Loader2 className="mx-auto h-6 w-6 animate-spin text-blue-600" />
+                    </td>
+                  </tr>
+                ) : events.length === 0 ? (
+                  <tr className="border-b">
+                    <td className="px-4 py-3 text-gray-500" colSpan={3}>
+                      No events recorded yet. Start browsing to see analytics data.
+                    </td>
+                  </tr>
+                ) : (
+                  events.map((event, idx) => (
+                    <tr key={idx} className="border-b hover:bg-gray-50">
+                      <td className="px-4 py-3 font-medium">{event.eventType}</td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {new Date(event.timestamp).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {event.properties
+                          ? JSON.stringify(event.properties).substring(0, 50)
+                          : "-"}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

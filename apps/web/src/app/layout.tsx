@@ -50,6 +50,9 @@ export default function RootLayout({
         <link rel="preload" href="/memoji_poster.jpg" as="image" />
         {/* Preconnect to improve resource loading */}
         <link rel="dns-prefetch" href="https://www.abishek-maharajan.online" />
+        {/* Preconnect to Google Analytics for faster loading */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       </head>
       <body className={`${inter.className} font-sans antialiased`}>
         <ErrorBoundary>
