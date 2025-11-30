@@ -1,19 +1,27 @@
 export default {
-  logo: <span style={{ fontWeight: 700, fontSize: "1.25rem" }}>Abishek Maharajan Docs</span>,
+  logo: (
+    <span style={{ fontWeight: 700, fontSize: "1.25rem" }}>
+      Abishek Maharajan Docs
+    </span>
+  ),
   font: false, // Use Inter from layout for better performance
   project: {
     link: "https://github.com/TentacioPro",
   },
   docsRepositoryBase: "https://github.com/TentacioPro/legendary-happiness",
   footer: {
-    text: <span>{new Date().getFullYear()} © Abishek Maharajan</span>,
+    text: (
+      <span>
+        {new Date().getFullYear()} © Abishek Maharajan
+      </span>
+    ),
   },
   useNextSeoProps() {
     return {
       titleTemplate: "%s – Abishek Maharajan Docs",
     };
   },
-  head: () => (
+  head: (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta property="og:title" content="Abishek Maharajan Documentation" />
@@ -21,7 +29,6 @@ export default {
         property="og:description"
         content="Technical documentation and portfolio architecture"
       />
-      {/* Performance hint */}
       <meta httpEquiv="x-dns-prefetch-control" content="on" />
     </>
   ),
