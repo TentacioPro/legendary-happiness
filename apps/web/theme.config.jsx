@@ -37,9 +37,14 @@ export default {
   sidebar: {
     defaultMenuCollapseLevel: 1,
     toggleButton: true,
+    autoCollapse: true, // Auto-collapse inactive sections
   },
   toc: {
     backToTop: true,
+    float: true, // Floating TOC for better performance
+  },
+  search: {
+    placeholder: 'Search documentation...',
   },
   navigation: {
     prev: true,

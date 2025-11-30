@@ -4,7 +4,12 @@ const withNextra = nextra({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.jsx',
   latex: true,
-  defaultShowCopyCode: true
+  defaultShowCopyCode: true,
+  // Performance optimizations
+  flexsearch: {
+    codeblocks: false // Disable code block indexing for faster builds
+  },
+  codeHighlight: true,
 })
 
 /** @type {import('next').NextConfig} */
@@ -44,8 +49,23 @@ const nextConfig = {
   // also adding incorrect paths and are not needed.
   
   trailingSlash: true,
+  
+  // Performance optimizations
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
   experimental: {
-    optimizePackageImports: ['lucide-react']
+    optimizePackageImports: ['lucide-react', 'nextra', 'nextra-theme-docs'],
+    optimizeCss: true,
+  },
+  
+  // Reduce bundle size
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
+    },
   },
 
   // Security Headers
