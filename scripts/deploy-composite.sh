@@ -77,13 +77,15 @@ cp "$V1_CONFIG_PATH" "$V1_CONFIG_PATH.backup"
 # Modify next.config to add basePath '/v1'
 echo -e "${YELLOW}Modifying Next.js config to add basePath: '/v1'...${NC}"
 
-# Use sed to add basePath and assetPrefix after 'output: "export",'
+# Replace existing basePath and assetPrefix values
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
-    sed -i '' 's/output: "export",/output: "export",\n  basePath: "\/v1",\n  assetPrefix: "\/v1",/' "$V1_CONFIG_PATH"
+    sed -i '' 's/basePath: "[^"]*"/basePath: "\/v1"/' "$V1_CONFIG_PATH"
+    sed -i '' 's/assetPrefix: "[^"]*"/assetPrefix: "\/v1"/' "$V1_CONFIG_PATH"
 else
     # Linux/Windows Git Bash
-    sed -i 's/output: "export",/output: "export",\n  basePath: "\/v1",\n  assetPrefix: "\/v1",/' "$V1_CONFIG_PATH"
+    sed -i 's/basePath: "[^"]*"/basePath: "\/v1"/' "$V1_CONFIG_PATH"
+    sed -i 's/assetPrefix: "[^"]*"/assetPrefix: "\/v1"/' "$V1_CONFIG_PATH"
 fi
 
 echo -e "${YELLOW}Installing V1 dependencies...${NC}"
