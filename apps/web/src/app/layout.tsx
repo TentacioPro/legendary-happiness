@@ -48,14 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preload critical custom font for faster LCP */}
-        <link
-          rel="preload"
-          href="/assets/GoldenSignature.otf"
-          as="font"
-          type="font/otf"
-          crossOrigin="anonymous"
-        />
+        {/* next/font/local handles font loading automatically */}
         {/* Preload critical hero video poster */}
         <link rel="preload" href="/memoji_poster.jpg" as="image" />
         {/* Preconnect to improve resource loading */}

@@ -74,10 +74,7 @@
     @apply bg-background text-foreground;
   }
 }
-@font-face {
-  font-family: "GoldenSignature";
-  src: url("/GoldenSignature.otf");
-}
+/* GoldenSignature font is loaded via next/font/local in header.tsx */
 h1 {
   font-size: 2rem;
   font-weight: 700;
