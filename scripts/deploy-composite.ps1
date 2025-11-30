@@ -57,7 +57,7 @@ Write-ColorOutput Yellow "Checking out $V1_BRANCH..."
 git checkout $V1_BRANCH
 
 # Check if V1 has the old structure (src/) or new structure (apps/web)
-if (Test-Path "apps/web") {
+if (Test-Path "apps/web/next.config.mjs") {
     $V1_CONFIG_PATH = "apps/web/next.config.mjs"
     $V1_OUT_PATH = "apps/web/out"
     $V1_BUILD_CMD = "pnpm --filter web build"
@@ -68,6 +68,15 @@ if (Test-Path "apps/web") {
 }
 
 Write-ColorOutput Yellow "Detected V1 config at: $V1_CONFIG_PATH"
+
+# Verify config file exists
+if (-not (Test-Path $V1_CONFIG_PATH)) {
+    Write-ColorOutput Red "Error: Config file not found at $V1_CONFIG_PATH"
+    Write-ColorOutput Red "V1 branch structure may have changed."
+    git checkout $CURRENT_BRANCH
+    Remove-Item -Path $TEMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+    exit 1
+}
 
 # Backup original config
 Copy-Item $V1_CONFIG_PATH "$V1_CONFIG_PATH.backup"

@@ -50,7 +50,7 @@ echo -e "${YELLOW}Checking out $V1_BRANCH...${NC}"
 git checkout "$V1_BRANCH"
 
 # Check if V1 has the old structure (src/) or new structure (apps/web)
-if [ -d "apps/web" ]; then
+if [ -f "apps/web/next.config.mjs" ]; then
     V1_CONFIG_PATH="apps/web/next.config.mjs"
     V1_OUT_PATH="apps/web/out"
     V1_BUILD_CMD="pnpm --filter web build"
@@ -61,6 +61,15 @@ else
 fi
 
 echo -e "${YELLOW}Detected V1 config at: $V1_CONFIG_PATH${NC}"
+
+# Verify config file exists
+if [ ! -f "$V1_CONFIG_PATH" ]; then
+    echo -e "${RED}Error: Config file not found at $V1_CONFIG_PATH${NC}"
+    echo -e "${RED}V1 branch structure may have changed.${NC}"
+    git checkout "$CURRENT_BRANCH"
+    rm -rf "$TEMP_DIR"
+    exit 1
+fi
 
 # Backup original config
 cp "$V1_CONFIG_PATH" "$V1_CONFIG_PATH.backup"
