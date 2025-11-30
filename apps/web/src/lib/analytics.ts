@@ -34,7 +34,7 @@ class AnalyticsService {
   }
 
   /**
-   * Track analytics event
+   * Track analytics event (Hybrid: GA4 + Custom API)
    */
   async trackEvent(
     eventType: AnalyticsEventType,
@@ -53,7 +53,7 @@ class AnalyticsService {
     // Log event locally
     logger.trackEvent(eventType, properties);
 
-    // Send to external endpoint (if enabled)
+    // Send to Custom API Gateway (if enabled)
     if (this.isEnabled) {
       try {
         await this.sendToEndpoint(event);
@@ -64,6 +64,24 @@ class AnalyticsService {
           error as Error,
         );
       }
+    }
+
+    // Send to Google Analytics (if available)
+    this.sendToGA4(eventType, properties);
+  }
+
+  /**
+   * Send event to Google Analytics 4
+   */
+  private sendToGA4(
+    eventType: AnalyticsEventType,
+    properties?: Record<string, any>,
+  ): void {
+    if (typeof window === "undefined") return;
+
+    // Check if gtag is available (loaded by @next/third-parties)
+    if (typeof (window as any).gtag === "function") {
+      (window as any).gtag("event", eventType, properties);
     }
   }
 

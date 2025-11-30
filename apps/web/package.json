@@ -24,6 +24,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.0.5",
+    "@next/third-parties": "^16.0.5",
     "@portfolio/types": "workspace:^",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
