@@ -23,10 +23,10 @@ export default function MotionText({
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{
-            delay: index * 0.03 + delayOffset,
+            delay: index * 0.015 + delayOffset, // Reduced from 0.03 to 0.015 (2x faster)
             type: "spring",
-            damping: 15,
-            stiffness: 400,
+            damping: 20, // Increased damping for faster settling
+            stiffness: 500, // Increased stiffness for snappier animation
           }}
         >
           {letter}

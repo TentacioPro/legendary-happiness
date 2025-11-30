@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 const goldenSignature = localFont({
   src: "../assets/GoldenSignature.otf",
   display: "swap",
+  preload: true,
+  fallback: ["cursive", "system-ui"],
 });
 
 export default function Header() {

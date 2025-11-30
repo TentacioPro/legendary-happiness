@@ -31,28 +31,28 @@ export default function hero() {
         </MotionDiv>
       </div>
       <div className="my-4 flex flex-col items-center gap-2">
-        <MotionDiv delayOffset={0.8}>
+        <MotionDiv delayOffset={0.4}>
           <h1 className="text-2xl font-bold">Developer 🧑🏻‍💻</h1>
         </MotionDiv>
-        <MotionDiv delayOffset={0.9}>
+        <MotionDiv delayOffset={0.5}>
           <h1 className="text-2xl font-bold">Photographer 📸</h1>
         </MotionDiv>
-        <MotionDiv delayOffset={1}>
+        <MotionDiv delayOffset={0.6}>
           <h1 className="text-2xl font-bold">LLM Enthusiast 🤖</h1>
         </MotionDiv>
       </div>
       <div className="my-12 flex w-full max-w-3xl flex-col gap-4 px-4 text-center sm:px-6">
-        <MotionDiv delayOffset={1.2}>
+        <MotionDiv delayOffset={0.7}>
           <p className="text-lg font-semibold leading-relaxed text-gray-700 sm:text-xl md:text-2xl">
             "The true sign of intelligence is not knowledge but imagination."
           </p>
         </MotionDiv>
-        <MotionDiv delayOffset={1.4}>
+        <MotionDiv delayOffset={0.8}>
           <p className="text-sm text-gray-600 sm:text-base">
             — Albert Einstein
           </p>
         </MotionDiv>
-        <MotionDiv delayOffset={1.6}>
+        <MotionDiv delayOffset={0.9}>
           <p className="mt-4 text-base leading-relaxed sm:text-lg md:text-xl">
             I'm a polymath developer with a passion for building intelligent
             systems and capturing moments through photography. I thrive at the
@@ -61,7 +61,7 @@ export default function hero() {
         </MotionDiv>
       </div>
       <div className="my-8">
-        <ContactList delayOffset={1.45} showWhenInView={false} />
+        <ContactList delayOffset={0.8} showWhenInView={false} />
       </div>
     </section>
   );

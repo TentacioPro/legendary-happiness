@@ -13,6 +13,8 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  preload: true,
+  fallback: ["system-ui", "arial"],
 });
 export const metadata: Metadata = {
   title: "Abishek Maharajan | Portfolio",
@@ -46,7 +48,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preload critical hero video poster for faster LCP */}
+        {/* Preload critical custom font for faster LCP */}
+        <link
+          rel="preload"
+          href="/assets/GoldenSignature.otf"
+          as="font"
+          type="font/otf"
+          crossOrigin="anonymous"
+        />
+        {/* Preload critical hero video poster */}
         <link rel="preload" href="/memoji_poster.jpg" as="image" />
         {/* Preconnect to improve resource loading */}
         <link rel="dns-prefetch" href="https://www.abishek-maharajan.online" />
