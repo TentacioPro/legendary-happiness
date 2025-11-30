@@ -85,8 +85,9 @@ Copy-Item $V1_CONFIG_PATH "$V1_CONFIG_PATH.backup"
 Write-ColorOutput Yellow "Modifying Next.js config to add basePath: '/v1'..."
 
 $configContent = Get-Content $V1_CONFIG_PATH -Raw
-$configContent = $configContent -replace 'output: "export",', 'output: "export",`n  basePath: "/v1",`n  assetPrefix: "/v1",'
-Set-Content $V1_CONFIG_PATH $configContent
+# Use a more precise replacement that preserves formatting
+$configContent = $configContent -replace '(output:\s*"export"\s*,)', '$1`n  basePath: "/v1",`n  assetPrefix: "/v1",'
+Set-Content $V1_CONFIG_PATH $configContent -NoNewline
 
 Write-ColorOutput Yellow "Installing V1 dependencies..."
 pnpm install

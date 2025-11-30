@@ -61,7 +61,6 @@ const nextConfig = {
   
   experimental: {
     optimizePackageImports: ['lucide-react', 'nextra', 'nextra-theme-docs'],
-    optimizeCss: true,
     webpackBuildWorker: true, // Faster builds
   },
   
