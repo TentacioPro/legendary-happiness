@@ -196,7 +196,7 @@ else
     git commit -m "Deploy: V2 at root, V1 at /v1 ($(date '+%Y-%m-%d %H:%M:%S'))"
     
     echo -e "${YELLOW}Pushing to gh-pages...${NC}"
-    git push origin "$DEPLOY_BRANCH"
+    git push origin "$DEPLOY_BRANCH" --force
     
     echo -e "${GREEN}✓ Deployment successful!${NC}"
 fi

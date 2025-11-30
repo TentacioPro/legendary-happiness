@@ -198,7 +198,7 @@ if ($LASTEXITCODE -ne 0) {
     git commit -m "Deploy: V2 at root, V1 at /v1 ($commitDate)"
     
     Write-ColorOutput Yellow "Pushing to gh-pages..."
-    git push origin $DEPLOY_BRANCH
+    git push origin $DEPLOY_BRANCH --force
     
     Write-ColorOutput Green "✓ Deployment successful!"
 } else {
