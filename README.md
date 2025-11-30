@@ -85,37 +85,38 @@ A modern, responsive, and analytics-enabled personal portfolio website showcasin
 ## 📁 Project Structure
 
 ```
-legendary-happiness/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── layout.tsx         # Root layout with Inter font
-│   │   ├── page.tsx           # Homepage
-│   │   ├── resume/            # Resume viewer
-│   │   └── analytics/         # Analytics dashboard
-│   ├── components/            # React components
-│   │   ├── header.tsx         # Enhanced navigation
-│   │   ├── contact-list.tsx   # Instrumented with analytics
-│   │   └── ui/                # Shadcn components
-│   ├── sections/              # Page sections
-│   │   ├── hero.tsx           # Responsive hero section
-│   │   ├── about.tsx          # About section
-│   │   ├── skills.tsx         # Skills showcase
-│   │   └── contact.tsx        # Contact section
-│   ├── lib/
-│   │   ├── logger.ts          # Structured logging
-│   │   └── analytics.ts       # Analytics service
-│   └── utils/
-│       ├── resume-version.ts  # Version tracking
-│       └── paths.ts           # Path utilities
-├── pages/                     # Next.js Pages Router (Nextra)
-│   └── docs/                  # Documentation
-│       ├── agent-log.mdx      # AI development history
-│       ├── architecture.mdx
-│       ├── components.mdx
-│       └── deployment.mdx
-├── public/
-│   └── resume/                # Resume PDF storage
-└── tests/                     # Test files (22 passing)
+legendary-happiness/                    # Monorepo root
+├── apps/
+│   ├── web/                           # Next.js frontend application
+│   │   ├── src/
+│   │   │   ├── app/                   # Next.js App Router
+│   │   │   │   ├── layout.tsx         # Root layout with Inter font
+│   │   │   │   ├── page.tsx           # Homepage
+│   │   │   │   ├── resume/            # Resume viewer
+│   │   │   │   └── analytics/         # Analytics dashboard
+│   │   │   ├── components/            # React components
+│   │   │   ├── sections/              # Page sections
+│   │   │   ├── lib/                   # Utilities (logger, analytics)
+│   │   │   └── hooks/                 # Custom React hooks
+│   │   ├── pages/                     # Nextra docs (Pages Router)
+│   │   │   └── docs/                  # Technical documentation
+│   │   ├── public/                    # Static assets
+│   │   │   └── resume/                # Resume PDF storage
+│   │   └── __tests__/                 # Test files (45 passing)
+│   ├── api-gateway/                   # Express.js API Gateway
+│   │   └── src/                       # API routes and middleware
+│   └── ai-engine/                     # Python AI/ML services
+├── packages/
+│   └── types/                         # Shared TypeScript types (Golden Schema)
+├── docs/                              # Project documentation
+│   ├── README.md                      # Documentation index
+│   ├── QUICK_START_GUIDE.md          # Getting started
+│   ├── PORTFOLIO_BLUEPRINT.md        # Architecture
+│   └── [20+ other docs]              # Organized by category
+├── scripts/                           # Build and utility scripts
+├── .husky/                            # Git hooks
+├── docker-compose.yml                 # Multi-service orchestration
+└── package.json                       # Monorepo root config
 ```
 
 ## 🚀 Quick Start
@@ -206,9 +207,16 @@ npm run format
 
 ## 📖 Documentation
 
-- **`QUICK_START_GUIDE.md`** - Get started quickly
-- **`IMPLEMENTATION_SUMMARY.md`** - Full implementation details
-- **`LEARNING_DASHBOARD_BLUEPRINT.mdx`** - Future dashboard architecture
+All project documentation is organized in the [`docs/`](./docs/) directory:
+
+- **[docs/QUICK_START_GUIDE.md](./docs/QUICK_START_GUIDE.md)** - Get started quickly
+- **[docs/PORTFOLIO_BLUEPRINT.md](./docs/PORTFOLIO_BLUEPRINT.md)** - Architecture overview
+- **[docs/LCP_OPTIMIZATION_GUIDE.md](./docs/LCP_OPTIMIZATION_GUIDE.md)** - Performance optimization
+- **[docs/DOCKER_SETUP.md](./docs/DOCKER_SETUP.md)** - Docker configuration
+- **[docs/README.md](./docs/README.md)** - Complete documentation index
+
+### Online Documentation
+
 - **`/docs/agent-log`** - AI development history
 - **`/docs/architecture`** - System architecture
 - **`/docs/components`** - Component library
