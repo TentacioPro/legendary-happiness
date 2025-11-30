@@ -4,7 +4,6 @@ export default {
       Abishek Maharajan Docs
     </span>
   ),
-  font: false, // Use Inter from layout for better performance
   project: {
     link: "https://github.com/TentacioPro",
   },

@@ -1,32 +1,55 @@
 # Deployment
 
-Complete guide to deploying the portfolio to GitHub Pages and other platforms.
+Complete guide to deploying the portfolio with multi-version support to GitHub Pages.
 
-## GitHub Pages Deployment
+## 🚀 Multi-Version Deployment System
 
-### Automatic Deployment
+This portfolio uses a custom deployment system that supports hosting multiple versions simultaneously:
+- **V2 (Current)** at root: `https://abishek-maharajan.online`
+- **V1 (Legacy)** at `/v1`: `https://abishek-maharajan.online/v1`
 
-The project includes a GitHub Actions workflow for automatic deployment.
+### Quick Deploy
 
-**Workflow File**: `.github/workflows/deploy.yml`
-
-**Trigger**: Push to `main` branch
-
-**Steps**:
-1. Checkout repository
-2. Setup pnpm
-3. Install dependencies
-4. Build static site
-5. Deploy to `gh-pages` branch
-
-### Manual Deployment
-
-Deploy manually using the deploy script:
-
-```bash
-pnpm build
-pnpm deploy
+**Windows (PowerShell)**:
+```powershell
+.\scripts\deploy-composite.ps1
 ```
+
+**Linux/Mac (Bash)**:
+```bash
+chmod +x scripts/deploy-composite.sh
+./scripts/deploy-composite.sh
+```
+
+### What It Does
+
+The deployment script automatically:
+1. Builds V1 with `basePath: '/v1'` configuration
+2. Builds V2 at root with default paths
+3. Merges both builds into a single deployment artifact
+4. Creates CNAME file for custom domain
+5. Deploys to `gh-pages` branch with force push
+6. Returns you to your original branch
+
+**Duration**: ~8-10 minutes total
+
+---
+
+## Pre-Deployment Verification
+
+Before deploying, run the local verification script:
+
+```powershell
+.\scripts\verify-local.ps1
+```
+
+This checks:
+- ✅ Dev server is running
+- ✅ All docs pages load correctly
+- ✅ Test suite passes (45/45 tests)
+- ✅ TypeScript compiles without errors
+- ✅ Production build succeeds
+- ✅ Git status is clean
 
 ---
 
@@ -34,84 +57,196 @@ pnpm deploy
 
 ### 1. Enable GitHub Pages
 
-1. Go to repository **Settings**
-2. Navigate to **Pages** section
-3. Set source to `gh-pages` branch
-4. Set folder to `/ (root)`
-5. Click **Save**
+1. Go to repository **Settings** → **Pages**
+2. Set source to `gh-pages` branch
+3. Set folder to `/ (root)`
+4. Click **Save**
 
-### 2. Configure Custom Domain (Optional)
+### 2. Configure Custom Domain
 
-1. Add `CNAME` file to `public/` directory:
+The deployment script automatically creates a `CNAME` file with:
 ```
-www.your-domain.com
+abishek-maharajan.online
 ```
 
-2. Configure DNS records:
+**DNS Configuration**:
 ```
+Type: A
+Name: @
+Value: 185.199.108.153
+       185.199.109.153
+       185.199.110.153
+       185.199.111.153
+
 Type: CNAME
 Name: www
-Value: yourusername.github.io
+Value: tentaciopro.github.io
 ```
 
-3. Enable HTTPS in GitHub Pages settings
+### 3. Enable HTTPS
+
+GitHub Pages automatically provisions SSL certificates for custom domains.
+
+---
+
+## Deployment Architecture
+
+```
+GitHub Repository (feat/factory-floor)
+           ↓
+    Deployment Script
+           ↓
+    ┌──────┴──────┐
+    ↓             ↓
+V2 Build      V1 Build
+(root)        (basePath: /v1)
+    ↓             ↓
+    └──────┬──────┘
+           ↓
+    Merged Artifact
+    ├── index.html (V2)
+    ├── _next/ (V2 assets)
+    ├── v1/
+    │   ├── index.html (V1)
+    │   └── _next/ (V1 assets)
+    ├── CNAME
+    └── .nojekyll
+           ↓
+    gh-pages Branch
+           ↓
+    GitHub Pages
+           ↓
+  abishek-maharajan.online
+```
 
 ---
 
 ## Build Configuration
 
-### Next.js Static Export
+### V2 (Current) - Root Deployment
 
-**File**: `next.config.mjs`
+**File**: `apps/web/next.config.mjs`
 
 ```javascript
 const nextConfig = {
-  output: "export",              // Enable static export
-  images: { unoptimized: true }, // Disable image optimization
+  output: "export",
   basePath: "",                  // Root directory
-  trailingSlash: true,           // Add trailing slashes
+  assetPrefix: "",               // Default assets path
+  trailingSlash: true,
+  images: { unoptimized: true },
+}
+```
+
+### V1 (Legacy) - Subdirectory Deployment
+
+The deployment script automatically modifies V1's config:
+
+```javascript
+const nextConfig = {
+  output: "export",
+  basePath: "/v1",               // Subdirectory
+  assetPrefix: "/v1",            // Prefixed assets
+  trailingSlash: true,
+  images: { unoptimized: true },
 }
 ```
 
 ### Build Output
 
-**Directory**: `/out`
+**V2 Directory**: `apps/web/out`  
+**V1 Directory**: `out` (from release/may-2025-v1 branch)
 
-**Contents**:
-- Static HTML files
-- Optimized CSS bundles
-- JavaScript chunks
-- Public assets
-- `_next/` directory
+**Merged Output**:
+- 245 files total
+- ~51 MB deployed
+- Static HTML, CSS, JS
+- Optimized assets
 
 ---
 
-## Alternative Platforms
+## Deployment Scripts
 
-### Vercel
+### Main Deployment Script
 
-1. Import repository on [Vercel](https://vercel.com)
-2. Configure build:
-   - Framework: Next.js
-   - Build Command: `pnpm build`
-   - Output Directory: `out`
-3. Deploy
+**Location**: `scripts/deploy-composite.ps1` (Windows) / `scripts/deploy-composite.sh` (Linux/Mac)
 
-### Netlify
+**Features**:
+- Automatic branch switching
+- Dual build process (V1 + V2)
+- Config modification for V1
+- Artifact merging
+- Git worktree deployment
+- Force push handling
+- Automatic cleanup
 
-1. Connect repository on [Netlify](https://netlify.com)
-2. Configure build:
-   - Build Command: `pnpm build`
-   - Publish Directory: `out`
-3. Deploy
+### Verification Script
 
-### Cloudflare Pages
+**Location**: `scripts/verify-deployment.ps1`
 
-1. Connect repository on [Cloudflare Pages](https://pages.cloudflare.com)
-2. Configure build:
-   - Build Command: `pnpm build`
-   - Build Output Directory: `out`
-3. Deploy
+Tests both deployed versions:
+```powershell
+.\scripts\verify-deployment.ps1
+```
+
+Checks:
+- V2 accessibility at root
+- V1 accessibility at /v1
+- HTTP status codes
+- Response times
+
+### Local Verification
+
+**Location**: `scripts/verify-local.ps1`
+
+Pre-deployment checks:
+```powershell
+.\scripts\verify-local.ps1
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue**: Sidebar not showing in docs
+
+**Solution**: Ensure `head` in `theme.config.jsx` is a function:
+```javascript
+head: () => (<>...</>)  // ✅ Correct
+head: (<>...</>)        // ❌ Wrong
+```
+
+---
+
+**Issue**: CSP blocking Google Fonts
+
+**Solution**: Update CSP in `next.config.mjs`:
+```javascript
+"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+"font-src 'self' data: https://fonts.gstatic.com",
+```
+
+---
+
+**Issue**: Assets 404 on GitHub Pages
+
+**Solution**: 
+- Check `basePath` configuration
+- Verify CNAME file exists
+- Ensure custom domain is configured in GitHub Settings
+
+---
+
+**Issue**: Deployment fails with "rejected" error
+
+**Solution**: The script uses `--force` push. If it still fails:
+```bash
+git checkout gh-pages
+git pull origin gh-pages
+git checkout feat/factory-floor
+.\scripts\deploy-composite.ps1
+```
 
 ---
 

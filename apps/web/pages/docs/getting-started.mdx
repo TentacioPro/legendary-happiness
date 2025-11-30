@@ -53,8 +53,12 @@ pnpm format       # Format code with Prettier
 ```
 
 ### Deployment
-```bash
-pnpm deploy       # Deploy to GitHub Pages
+```powershell
+# Windows
+.\scripts\deploy-composite.ps1
+
+# Linux/Mac
+./scripts/deploy-composite.sh
 ```
 
 ## Project Structure
@@ -81,8 +85,37 @@ pages/
 - `tsconfig.json` - TypeScript configuration
 - `vitest.config.ts` - Test configuration
 
+## Deployment
+
+Deploy to GitHub Pages with multi-version support:
+
+**Windows**:
+```powershell
+.\scripts\deploy-composite.ps1
+```
+
+**Linux/Mac**:
+```bash
+./scripts/deploy-composite.sh
+```
+
+**What it does**:
+- Builds V2 (current) for root deployment
+- Builds V1 (legacy) with `/v1` basePath
+- Merges both into single artifact
+- Deploys to `gh-pages` branch
+- Creates CNAME for custom domain
+
+**Result**:
+- V2: `https://abishek-maharajan.online`
+- V1: `https://abishek-maharajan.online/v1`
+
+See the [Deployment Guide →](/docs/deployment) for detailed instructions.
+
+---
+
 ## Next Steps
 
 - [Explore the Architecture →](/docs/architecture)
 - [Learn about Components →](/docs/components)
-- [Deployment Guide →](/docs/deployment)
+- [Read Deployment Guide →](/docs/deployment)

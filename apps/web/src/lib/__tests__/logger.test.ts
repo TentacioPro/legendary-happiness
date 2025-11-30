@@ -3,19 +3,15 @@ import { logger, LogLevel } from "../logger";
 
 describe("Logger", () => {
   let consoleErrorSpy: any;
-  let originalNodeEnv: string | undefined;
 
   beforeEach(() => {
-    // Set NODE_ENV to development for tests
-    originalNodeEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
-
+    // Mock NODE_ENV for tests
+    vi.stubEnv('NODE_ENV', 'development');
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
-    // Restore original NODE_ENV
-    process.env.NODE_ENV = originalNodeEnv;
+    vi.unstubAllEnvs();
     vi.restoreAllMocks();
   });
 
@@ -44,7 +40,7 @@ describe("Logger", () => {
   });
 
   it("should only log errors in production", () => {
-    process.env.NODE_ENV = "production";
+    vi.stubEnv('NODE_ENV', 'production');
     const consoleWarnSpy = vi
       .spyOn(console, "warn")
       .mockImplementation(() => {});
