@@ -148,6 +148,10 @@ Copy-Item -Path "$V1_BUILD_DIR\*" -Destination $V1_DEPLOY_DIR -Recurse -Force
 # Create a .nojekyll file to prevent GitHub Pages from ignoring files starting with _
 New-Item -ItemType File -Path (Join-Path $DEPLOY_DIR ".nojekyll") -Force | Out-Null
 
+# Create CNAME file for custom domain
+Write-ColorOutput Yellow "Creating CNAME file for custom domain..."
+Set-Content -Path (Join-Path $DEPLOY_DIR "CNAME") -Value "abishek-maharajan.online" -NoNewline
+
 Write-ColorOutput Green "✓ Builds merged successfully!"
 
 # ============================================

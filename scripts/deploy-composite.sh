@@ -145,6 +145,10 @@ cp -r "$V1_BUILD_DIR"/* "$DEPLOY_DIR/v1/"
 # Create a .nojekyll file to prevent GitHub Pages from ignoring files starting with _
 touch "$DEPLOY_DIR/.nojekyll"
 
+# Create CNAME file for custom domain
+echo -e "${YELLOW}Creating CNAME file for custom domain...${NC}"
+echo -n "abishek-maharajan.online" > "$DEPLOY_DIR/CNAME"
+
 echo -e "${GREEN}✓ Builds merged successfully!${NC}"
 
 # ============================================
