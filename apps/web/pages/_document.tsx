@@ -4,19 +4,26 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Preconnect to speed up font loading */}
+        {/* Critical: Preconnect to speed up font loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        {/* Preload Inter font for docs */}
+        {/* Critical: Inline font loading for instant text rendering */}
         <link
-          rel="preload"
+          rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          as="style"
+          media="print"
+          onLoad="this.media='all'"
         />
+        <noscript>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          />
+        </noscript>
       </Head>
       <body>
         <Main />

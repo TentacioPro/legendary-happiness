@@ -52,6 +52,9 @@ const nextConfig = {
   
   // Performance optimizations
   swcMinify: true,
+  reactStrictMode: true,
+  poweredByHeader: false,
+  
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -59,6 +62,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'nextra', 'nextra-theme-docs'],
     optimizeCss: true,
+    webpackBuildWorker: true, // Faster builds
   },
   
   // Reduce bundle size

@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Critical CSS for LCP optimization */
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent FOUT (Flash of Unstyled Text) */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.75;
+}
+
+/* Critical: Optimize LCP element (first paragraph) */
+.nx-mt-6.nx-leading-7 {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.75;
+  margin-top: 1.5rem;
+}
+
 /* Performance optimizations for Nextra docs */
 * {
   /* Enable GPU acceleration for smoother scrolling */
@@ -13,6 +34,7 @@
 pre {
   contain: layout style paint;
   will-change: auto;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
 }
 
 /* Reduce layout shifts */
@@ -24,4 +46,15 @@ img, video {
 /* Optimize sidebar transitions */
 aside {
   contain: layout style;
+  will-change: transform;
+}
+
+/* Optimize navigation */
+nav {
+  contain: layout style;
+}
+
+/* Reduce repaints on scroll */
+.nextra-scrollbar {
+  contain: strict;
 }
