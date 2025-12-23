@@ -15,7 +15,7 @@ const inter = Inter({
 });
 export const metadata: Metadata = {
   title: "Abishek Maharajan | Portfolio",
-  metadataBase: new URL("https://www.abishek-maharajan.online"),
+  metadataBase: new URL("https://abishekmaharajan.online"),
   alternates: {
     canonical: "/",
   },
